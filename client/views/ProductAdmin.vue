@@ -32,8 +32,8 @@
             <input name="newProductUnit" class="form-control" type="text" v-model="newProduct" :disabled='isAddingTask'>
         </div>   
         <div class="form-group"> 
-            <input type="radio" name="newIsActive">
-            <label name='newIsActive'>Make active online</label>
+            <input type="radio" name="newProductIsActive">
+            <label name='newProductIsActive'>Make active online</label>
         </div>
 			<button class='btn btn-primary' :disabled='isAddingProduct'>
 				<span v-show='isAddingProduct'>
@@ -44,13 +44,42 @@
 </template>
 
 <script>
+	import Vue from 'vue'; //what's this for?
 	import 'vue-awesome/icons/spinner';
 	import Icon from 'vue-awesome/components/Icon.vue';
 	
-	import { mapState, mapActions } from 'vuex';
+	import { mapState, mapActions } from 'vuex'; //need this?
 	export default {
+		data() {
+			return {
+				newProductName: '',
+				newProductPrice: 0,
+				newProductUnit: '',
+				newProductIsActive: false
+			}
+		},
+		// computed: {
+		// ...check that all fields are fill out
 
-	}
+		// ...check and warn if product name already exists
+		// 	productNameExists: function() {
+		// 		return this.newProductName !== '' &&
+		// 			this.
+		// 	}
+		methods: {
+			postNewProduct: function() {
+				this.$http.post('/product-admin', {
+					name: this.newProductName,
+				    price: this.newProductPrice,
+				    unit: this.newProductUnit,
+				    isActive: this.newProductIsActive
+				}).then(response => {
+					console.log('product sent to DB');
+				})
+			}
+		}
+	};
+	
 
 </script>
 
