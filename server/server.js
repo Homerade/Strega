@@ -46,4 +46,72 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(routes);
 
+
+app.post('/products', function(req, res) {
+	models.Product.create(req.body)
+		.then(function(product) {
+			res.format({
+				html: function() {
+					res.redirect('/products');
+				},
+				json: function() {
+					res.json(product)
+				}
+			});
+		});
+});
+
+app.get('/products', function(req, res) {
+	models.Product.findAll()
+		.then(function(products) {
+			res.format({
+				html: function() {
+					res.send(products);
+				},
+				json: function() {
+					res.json(products);
+				}
+
+			});
+		})
+		.catch(function(error) {
+			console.log(error);
+		})
+});
+
+app.get('/products/:product_id', function(req, res) {
+	models.Product.findById()
+		.then(function(product) {
+			res.format({
+				html: function() {
+					res.send(products);
+				},
+				json: function() {
+					res.json(products);
+				}
+			});
+		});
+});
+
+app.delete('/products/:product_id', function(req, res) {
+	req.product.destroy()
+		.then(function() {
+			res.sendStatus(200);
+		});
+});
+
+app.put('/products/:product_id', function(req, res) {
+	models.Product.findById(product_id)
+		.then(function(product) {
+			product.update(req.body)
+				.then(function() {
+					res.sendStatus(200);
+				})
+				.catch(function(error) {
+					res.status(500).send(error);
+				}); 
+			
+			});
+		});
+
 export default app;

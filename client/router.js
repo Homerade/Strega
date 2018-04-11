@@ -7,6 +7,7 @@ import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import Users from './views/Users.vue';
 import User from './views/User.vue';
+import ProductAdmin from './views/ProductAdmin.vue';
 
 Vue.use(Router);
 
@@ -36,7 +37,18 @@ export default new Router({
             path: '/users/:username',
             name: 'user',
             component: User,
-            props: true
+            props: true 
+        },
+        {
+            path: '/product-admin',
+            name: 'product-admin',
+            component: ProductAdmin
         }
+        // },
+        // {
+        //     path: '/currentproducts',
+        //     name: 'products',
+        //     component: Products
+        // }
     ]
 });

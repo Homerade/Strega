@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     user: {},
-    users: []
+    users: [],
+    product: {},
+    products: []
   },
   mutations: {
     setLoggedIn(state, isLoggedIn) {

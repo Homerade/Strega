@@ -1,15 +1,21 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
-        <router-link class="navbar-brand" to='/'>FSWD</router-link>
-        <ul class="navbar-nav mr-auto">
+        <router-link class="navbar-brand" to='/'><h1>Strega Provisions.</h1></router-link>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <router-link class="nav-link" to='/currentproducts'>Current Products</router-link>
+            </li>
             <li class="nav-item" v-show='!isLoggedIn'>
                 <router-link class="nav-link" to='/login'>Login</router-link>
             </li>
             <li class="nav-item" v-show='!isLoggedIn'>
-                <router-link class="nav-link" to='/register'>Register</router-link>
+                <router-link class="nav-link" to='/register'>Start an Account</router-link>
             </li>
             <li class="nav-item" v-show="isLoggedIn">
                 <router-link class="nav-link" to='/users'>Users</router-link>
+            </li>
+             <li class="nav-item">
+                <router-link class="nav-link" to='/product-admin'>Admin</router-link>
             </li>
         </ul>
         <ul class='navbar-nav' v-show='isLoggedIn'>
@@ -35,3 +41,21 @@ export default {
     methods: mapActions(['logout'])
 }
 </script>
+
+<style>
+    body {
+        font-family: courier;
+    }
+</style>
+<!-- <style>
+    /*@import url("https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet");*/
+    @font-face {
+        font-family: 'PT Mono';
+        src: url(../../public/assets/fonts/PTMono.ttf) format('ttf');
+    }
+    
+    body {
+    font-family: 'PT Mono', monospace;
+    }
+
+</style>  -->   
