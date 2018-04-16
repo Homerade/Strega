@@ -1,38 +1,51 @@
 <template>
-<div>	
-	<!-- <form @submit.prevent="addNewProduct">
+<div>
+	<form @submit.prevent="editNewProduct">
 		<h3>Edit existing product</h3>
 		<div class='form-group'>
-			<input name='productSearch' class='form-control' type='text' v-model='search' placeholder="search products">
-			<select class="form-control" id="databaseProducts">
-		      <option>[{ database array.name }]</option>
-		    </select>
-		    <label name='editProductName'>Product Name</label>
+			<label name='productSelect'>Select product to edit</label>
+			<v-select v-model="selected" label='name' :options="products" ></v-select>
+		</div>
+		<div class='form-group'>  
+		    <label name='editProductName'>Edit Name</label>
 		    <input name='editProductName' class="form-control" type="text">
-		    <label name='editProductPrice'>Price</label>
+		</div>
+		<div class='form-group'>    
+		    <label name='editProductPrice'>Edit Price</label>
 		    <input name='editProductPrice' class="form-control" type='number' min="0.00" max="100000.00" step="0.01">
-		    <label>Price per Unit</label>
-		    <input name='editProductUnit' class="form-control" type="">
-		    <label name='editIsActive'>Post online for sale</label>
-		    <input type="radio" name="editIsActive">
+		</div>   
+		<div class="form-group"> 
+		    <label>Pricing Unit</label>
+		    <v-select label='pricingUnit' :options="['lb','ml','g']"></v-select>
 		</div>    
-	</form> -->	
-	
-	<form>	
+		<div class='form-group'>
+		    <input type="checkbox" name="editIsActive">
+		    <label name='editIsActive'>Make active online</label>
+		</div>    
+		    <button class='btn btn-primary' :disabled='isAddingProduct'>
+				<span v-show='isAddingProduct'>
+					<icon name="spinner" pulse></icon>
+					&nbsp;</span>Edit product</button>
+		   
+	</form>	
+
+	<form @submit.prevent="postNewProduct">
+		<h3>Add new product</h3>
+		<p id='errorMsg'>something</p>
 		<div class='form-group'>
 			<label for='newProductName'>Product Name</label>
-            <input name="newProductName" class="form-control" type="text" v-model="newProduct" :disabled='isAddingTask'>
+            <input name="newProductName" class="form-control" type="text" v-model='newProductName' :disabled='isAddingProduct'>
         </div>
         <div class="form-group">    
         	<label for="newProductPrice">Product Price</label>
-            <input name="newProductPrice" class="form-control" type="number" min="0.00" max="100000.00" step="0.01" v-model="newProduct" :disabled='isAddingTask'>
+            <input name="newProductPrice" class="form-control" type="number" min="0.00" max="100000.00" step="0.01" v-model='newProductPrice' :disabled='isAddingProduct'>
         </div>
         <div class="form-group">
-        	<label for="newProductUnit">Price per Unit</label>
-            <input name="newProductUnit" class="form-control" type="text" v-model="newProduct" :disabled='isAddingTask'>
+        	<label for="newProductPriceUnit">Price per Unit</label>
+        	<v-select v-model='newProductPriceUnit' :options="['lb','ml','g']" :disabled='isAddingProduct'></v-select>
         </div>   
         <div class="form-group"> 
-            <input type="radio" name="newProductIsActive">
+            <input type="checkbox" name="newProductIsActive" v-model='newProductIsActive'>
             <label name='newProductIsActive'>Make active online</label>
         </div>
 			<button class='btn btn-primary' :disabled='isAddingProduct'>
@@ -45,21 +58,30 @@
 
 <script>
 	import Vue from 'vue'; //what's this for?
+	import vSelect from 'vue-select'
 	import 'vue-awesome/icons/spinner';
 	import Icon from 'vue-awesome/components/Icon.vue';
+
+	Vue.component('v-select', vSelect)
 	
 	import { mapState, mapActions } from 'vuex'; //need this?
 	export default {
 		data() {
 			return {
 				newProductName: '',
-				newProductPrice: 0,
-				newProductUnit: '',
-				newProductIsActive: false
+				newProductPrice: null,
+				newProductPriceUnit: '',
+				newProductIsActive: false,
+				isAddingProduct: false,
+				// selected: {}
 			}
 		},
-		// computed: {
-		// ...check that all fields are fill out
+		computed: {
+			products() {
+				return this.$store.state.products;
+			}
+		},	
+		// ...check that all fields are filled out
 
 		// ...check and warn if product name already exists
 		// 	productNameExists: function() {
@@ -68,18 +90,65 @@
 		// 	}
 		methods: {
 			postNewProduct: function() {
-				this.$http.post('/product-admin', {
+				if(!this.newProductName) {
+					// alert('Please add product name');
+					// document.getElementById('errorMsg').show().textContent('Please add a product name');
+					// this.newProductName.focus();
+					
+				} else if (!this.newProductPrice) {
+					alert('Please add product price');
+					this.newProductPrice.focus();
+					 
+				} else if (!this.newProductPriceUnit) {
+					alert('Please add a price unit');
+					this.newProductPrice.focus();
+
+				} else {
+				this.isAddingProduct = true;	
+				this.$http.post('/product', {
 					name: this.newProductName,
 				    price: this.newProductPrice,
-				    unit: this.newProductUnit,
+				    pricingUnit: this.newProductPriceUnit,
 				    isActive: this.newProductIsActive
 				}).then(response => {
-					console.log('product sent to DB');
-				})
-			}
-		}
-	};
-	
+					this.newProductName = '';
+					this.newProductPrice = null;
+					this.newProductPriceUnit = '';
+					this.newProductIsActive = false;
+					this.errorMsg.show()
+						.textContent('Your new product has been added')
+						.style.color = 'green';
+				}).catch(response => onsole.log('something broke', response
+				)).finally(() => this.isAddingProduct = false);
+			  }
+			},
+			// showSelected: function() {
+			// 	console.log({selected});
+			// }  
+		},
+		mounted() {
+			this.$store.dispatch('retrieveProducts');
+
+			// document.getElementById('errorMsg').hide();
+			
+		},
+
+	}	
 
 </script>
+
+<style>
+	form {
+		margin: 10vh 10vw 20vh;
+	}
+
+	h3 {
+		margin-bottom: 5vh;		
+	}
+
+	v-select {
+		font-family: inherit; 
+	}
+
+</style>
 

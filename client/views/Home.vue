@@ -2,7 +2,8 @@
 	<div>
 		<!-- <h1 class="text-center">Welcome to your new app!</h1> -->
 		<section>
-			<h3 class="text-center">/Images will go here/</h3>
+			<!-- <h3 class="text-center">/Images will go here/</h3> -->
+			<img src='/assets/images/blk_truffle.jpg' alt='my image'>
 		</section>
 
 		<section>

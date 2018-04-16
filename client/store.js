@@ -12,6 +12,10 @@ export default new Vuex.Store({
     products: []
   },
   mutations: {
+    setProducts(state, products) {
+      console.log(products);
+      state.products = products;
+    },
     setLoggedIn(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;
     },
@@ -23,6 +27,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    retrieveProducts({ commit }) {
+      return Vue.axios.get('/products')
+        .then(response => {
+          commit('setProducts', response.data);
+        });
+    },
     start({ dispatch }) {
       return dispatch('checkLogin');
     },

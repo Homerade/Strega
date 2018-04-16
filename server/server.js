@@ -47,9 +47,10 @@ if (process.env.NODE_ENV === 'development') {
 app.use(routes);
 
 
-app.post('/product-admin', function(req, res) {
+app.post('/product', function(req, res) {
 	models.Product.create(req.body)
 		.then(function(product) {
+			console.log('back end works', product);
 			res.format({
 				html: function() {
 					res.redirect('/products');
