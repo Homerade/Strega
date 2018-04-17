@@ -9,7 +9,7 @@
     "logging": false
   },
   "production": {
-    "use_env_variable": "postgres://jbhapsldujctzg:c4dc1a755aeb57f2e6332ad05b9656d38b7cbf10504f53905d7b45afba0f06d7@ec2-54-83-204-6.compute-1.amazonaws.com:5432/d33352hvkcanpa"
+    "use_env_variable": "DATABASE_URL"
   }
 }
 
