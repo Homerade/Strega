@@ -1,26 +1,26 @@
 <template>
 <div>
-	<form @submit.prevent="editNewProduct">
+	<form @submit.prevent="editProduct">
 		<h3>Edit existing product</h3>
 		<div class='form-group'>
-			<label name='productSelect'>Select product to edit</label>
-			<v-select v-model="selected" label='name' :options="products" ></v-select>
+			<label for='productSelect'>Select product to edit</label>
+			<v-select v-model="selected" label='name' :options="products" placeholder='search products...'></v-select>
 		</div>
 		<div class='form-group'>  
-		    <label name='editProductName'>Edit Name</label>
-		    <input name='editProductName' class="form-control" type="text">
+		    <label for='editProductName'>Edit Name</label>
+		    <input name='editProductName' v-model='selected.name' class="form-control" type="text">
 		</div>
 		<div class='form-group'>    
-		    <label name='editProductPrice'>Edit Price</label>
-		    <input name='editProductPrice' class="form-control" type='number' min="0.00" max="100000.00" step="0.01">
+		    <label for='editProductPrice'>Edit Price</label>
+		    <input name='editProductPrice' v-model='selected.price' class="form-control" type='number' min="0.00" max="100000.00" step="0.01">
 		</div>   
 		<div class="form-group"> 
-		    <label>Pricing Unit</label>
-		    <v-select label='pricingUnit' :options="['lb','ml','g']"></v-select>
+		    <label for='editPricingUnit'>Pricing Unit</label>
+		    <v-select name='editPricingUnit' label='pricingUnit' v-model='selected.pricingUnit' :options="['lb','ml','g']"></v-select>
 		</div>    
 		<div class='form-group'>
-		    <input type="checkbox" name="editIsActive">
-		    <label name='editIsActive'>Make active online</label>
+		    <input type="checkbox" name="editIsActive" v-model='selected.isActive'>
+		    <label for='editIsActive'>Make active online</label>
 		</div>    
 		    <button class='btn btn-primary' :disabled='isAddingProduct'>
 				<span v-show='isAddingProduct'>
@@ -31,14 +31,14 @@
 
 	<form @submit.prevent="postNewProduct">
 		<h3>Add new product</h3>
-		<p id='errorMsg'>something</p>
+		<p v-bind:class="{ 'text-danger': isError, 'text-success': isSuccess }" v-if='infoMsg'>{{ infoMsg }}</p>
 		<div class='form-group'>
 			<label for='newProductName'>Product Name</label>
             <input name="newProductName" class="form-control" type="text" v-model='newProductName' :disabled='isAddingProduct'>
         </div>
         <div class="form-group">    
         	<label for="newProductPrice">Product Price</label>
-            <input name="newProductPrice" class="form-control" type="number" min="0.00" max="100000.00" step="0.01" v-model='newProductPrice' :disabled='isAddingProduct'>
+            <input name="newProductPrice" class="form-control" type="number" min="0.00" max="100000.00" step="0.01" v-model='newProductPrice' :disabled='isAddingProduct' ref='newProductPrice'>
         </div>
         <div class="form-group">
         	<label for="newProductPriceUnit">Price per Unit</label>
@@ -65,7 +65,12 @@
 	Vue.component('v-select', vSelect)
 	
 	import { mapState, mapActions } from 'vuex'; //need this?
+	
 	export default {
+
+		components: {
+			Icon
+		},
 		data() {
 			return {
 				newProductName: '',
@@ -73,7 +78,10 @@
 				newProductPriceUnit: '',
 				newProductIsActive: false,
 				isAddingProduct: false,
-				// selected: {}
+				selected: '',
+				infoMsg: '',
+				isError: false,
+				isSuccess: false
 			}
 		},
 		computed: {
@@ -89,19 +97,42 @@
 		// 			this.
 		// 	}
 		methods: {
+
+			editProduct: function() {
+				this.$http.put('/products/' + this.selected.id, {
+					name: this.editProductName,
+					price: this.editProductPrice,
+					pricingUnit: this.editPricingUnit,
+					isActive: this.editIsActive
+				}).then(response => {
+					this.editProductName = '';
+					this.editProductPrice = null;
+					this.editPricingUnit = '';
+					this.editIsActive = false;
+					this.infoMsg = 'Your product has been updated!';
+					this.isSuccess = true;
+				}).catch(response => console.log('something broke', response));
+				
+			},
+			// myevent: function() {
+			// 	if(!this.selected) {
+			// 		this.selected = {name: ''};
+			// 	}
+			// },
+		
 			postNewProduct: function() {
 				if(!this.newProductName) {
-					// alert('Please add product name');
-					// document.getElementById('errorMsg').show().textContent('Please add a product name');
-					// this.newProductName.focus();
+					this.infoMsg = 'Please add product name';
+					this.isError = true;
 					
 				} else if (!this.newProductPrice) {
-					alert('Please add product price');
-					this.newProductPrice.focus();
+					this.infoMsg = 'Please add product price';
+					this.isError = true;
 					 
 				} else if (!this.newProductPriceUnit) {
-					alert('Please add a price unit');
-					this.newProductPrice.focus();
+					this.infoMsg = 'Please add a price unit';
+					this.isError = true;
+					// this.newProductPrice.focus();
 
 				} else {
 				this.isAddingProduct = true;	
@@ -115,10 +146,9 @@
 					this.newProductPrice = null;
 					this.newProductPriceUnit = '';
 					this.newProductIsActive = false;
-					this.errorMsg.show()
-						.textContent('Your new product has been added')
-						.style.color = 'green';
-				}).catch(response => onsole.log('something broke', response
+					this.infoMsg = 'Your product has been created';
+					this.isSuccess = true;
+				}).catch(response => console.log('something broke', response
 				)).finally(() => this.isAddingProduct = false);
 			  }
 			},
@@ -127,10 +157,7 @@
 			// }  
 		},
 		mounted() {
-			this.$store.dispatch('retrieveProducts');
-
-			// document.getElementById('errorMsg').hide();
-			
+			this.$store.dispatch('retrieveProducts');			
 		},
 
 	}	

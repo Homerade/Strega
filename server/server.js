@@ -102,6 +102,7 @@ app.delete('/products/:product_id', function(req, res) {
 });
 
 app.put('/products/:product_id', function(req, res) {
+	const product_id = req.params.product_id;
 	models.Product.findById(product_id)
 		.then(function(product) {
 			product.update(req.body)
@@ -110,6 +111,7 @@ app.put('/products/:product_id', function(req, res) {
 				})
 				.catch(function(error) {
 					res.status(500).send(error);
+					console.log()
 				}); 
 			
 			});

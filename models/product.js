@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   var Product = sequelize.define('Product', {
     name: DataTypes.STRING,
     price: DataTypes.DECIMAL,
-    isActive: DataTypes.BOOLEAN
+    isActive: DataTypes.BOOLEAN,
+    pricingUnit: DataTypes.STRING
   }, {});
   Product.associate = function(models) {
     // associations can be defined here
