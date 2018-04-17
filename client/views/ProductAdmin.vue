@@ -4,11 +4,11 @@
 		<h3>Edit existing product</h3>
 		<div class='form-group'>
 			<label for='productSelect'>Select product to edit</label>
-			<v-select v-model="selected" label='name' :options="products" placeholder='search products...'></v-select>
+			<v-select v-model="selected" label='name' :options="products" placeholder='search products...' @input='selectedProduct'></v-select>
 		</div>
 		<div class='form-group'>  
 		    <label for='editProductName'>Edit Name</label>
-		    <input name='editProductName' v-model='selected.name' class="form-control" type="text">
+		    Name: <input name='editProductName' v-model='productName' class="form-control" type="text">
 		</div>
 		<div class='form-group'>    
 		    <label for='editProductPrice'>Edit Price</label>
@@ -19,7 +19,7 @@
 		    <v-select name='editPricingUnit' label='pricingUnit' v-model='selected.pricingUnit' :options="['lb','ml','g']"></v-select>
 		</div>    
 		<div class='form-group'>
-		    <input type="checkbox" name="editIsActive" v-model='selected.isActive'>
+		    <input type="checkbox" name="editIsActive" id='editIsActive' v-model='selected.isActive'>
 		    <label for='editIsActive'>Make active online</label>
 		</div>    
 		    <button class='btn btn-primary' :disabled='isAddingProduct'>
@@ -45,8 +45,8 @@
         	<v-select v-model='newProductPriceUnit' :options="['lb','ml','g']" :disabled='isAddingProduct'></v-select>
         </div>   
         <div class="form-group"> 
-            <input type="checkbox" name="newProductIsActive" v-model='newProductIsActive'>
-            <label name='newProductIsActive'>Make active online</label>
+            <input type="checkbox" name="newProductIsActive" id='newProductIsActive' v-model='newProductIsActive'>
+            <label for='newProductIsActive'>Make active online</label>
         </div>
 			<button class='btn btn-primary' :disabled='isAddingProduct'>
 				<span v-show='isAddingProduct'>
@@ -81,7 +81,8 @@
 				selected: '',
 				infoMsg: '',
 				isError: false,
-				isSuccess: false
+				isSuccess: false,
+				productName: ''
 			}
 		},
 		computed: {
@@ -97,7 +98,9 @@
 		// 			this.
 		// 	}
 		methods: {
-
+			selectedProduct: function(product) {
+				this.productName = product.name;
+			},
 			editProduct: function() {
 				this.$http.put('/products/' + this.selected.id, {
 					name: this.editProductName,
