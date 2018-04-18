@@ -95,19 +95,26 @@ app.get('/products/:product_id', function(req, res) {
 });
 
 app.delete('/products/:product_id', function(req, res) {
-	req.product.destroy()
-		.then(function() {
-			res.sendStatus(200);
-		});
+	const product_id = req.params.product_id;
+	models.Product.findById(product_id)
+		.then(function(trashProduct) {
+			trashProduct.destroy()
+				.then(function() {
+				res.sendStatus(200);
+		})
+	});
+		
 });
 
 app.put('/products/:product_id', function(req, res) {
 	const product_id = req.params.product_id;
 	models.Product.findById(product_id)
 		.then(function(product) {
+			console.log('this is the "product"' + product);
+			console.log(req.body);
 			product.update(req.body)
 				.then(function() {
-					res.sendStatus(200);
+					res.json(product);
 				})
 				.catch(function(error) {
 					res.status(500).send(error);

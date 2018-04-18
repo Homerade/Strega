@@ -24,6 +24,9 @@ export default new Vuex.Store({
     },
     setUsers(state, users) {
       state.users = users;
+    },
+    removeProduct(state, product) {
+      state.products = state.products.filter(p => p.id !== product.id);
     }
   },
   actions: {
@@ -74,6 +77,13 @@ export default new Vuex.Store({
           commit('setUsers', response.data);
         });
     },
+
+    deleteProduct({ state, commit }, product) {
+      return Vue.axios.delete(`/products/${product.id}`)
+        .then(response => {
+          commit('removeProduct', product);
+        });
+    }
   },
 
   getters: {

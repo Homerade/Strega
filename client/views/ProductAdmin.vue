@@ -8,24 +8,24 @@
 		</div>
 		<div class='form-group'>  
 		    <label for='editProductName'>Edit Name</label>
-		    Name: <input name='editProductName' v-model='productName' class="form-control" type="text">
+		    <input name='editProductName' v-model='editProductName' class="form-control" type="text">
 		</div>
 		<div class='form-group'>    
 		    <label for='editProductPrice'>Edit Price</label>
-		    <input name='editProductPrice' v-model='selected.price' class="form-control" type='number' min="0.00" max="100000.00" step="0.01">
+		    <input name='editProductPrice' v-model='editProductPrice' class="form-control" type='number' min="0.00" max="100000.00" step="0.01">
 		</div>   
 		<div class="form-group"> 
 		    <label for='editPricingUnit'>Pricing Unit</label>
-		    <v-select name='editPricingUnit' label='pricingUnit' v-model='selected.pricingUnit' :options="['lb','ml','g']"></v-select>
+		    <v-select name='editPricingUnit' label='pricingUnit' v-model='editPricingUnit' :options="['lb','ml','g']"></v-select>
 		</div>    
 		<div class='form-group'>
-		    <input type="checkbox" name="editIsActive" id='editIsActive' v-model='selected.isActive'>
+		    <input type="checkbox" name="editIsActive" id='editIsActive' v-model='editIsActive'>
 		    <label for='editIsActive'>Make active online</label>
 		</div>    
-		    <button class='btn btn-primary' :disabled='isAddingProduct'>
-				<span v-show='isAddingProduct'>
-					<icon name="spinner" pulse></icon>
-					&nbsp;</span>Edit product</button>
+		    <button class='btn btn-primary'>
+				Edit product</button>
+			
+			<button @click.stop="deleted" class="btn btn-danger" type="button">Delete product</button>
 		   
 	</form>	
 
@@ -82,7 +82,10 @@
 				infoMsg: '',
 				isError: false,
 				isSuccess: false,
-				productName: ''
+				editProductName: '',
+				editProductPrice: null,
+				editPricingUnit: '',
+				editIsActive: false
 			}
 		},
 		computed: {
@@ -99,7 +102,10 @@
 		// 	}
 		methods: {
 			selectedProduct: function(product) {
-				this.productName = product.name;
+				this.editProductName = product.name;
+				this.editProductPrice = product.price;
+				this.editPricingUnit = product.pricingUnit;
+				this.editIsActive = product.isActive;
 			},
 			editProduct: function() {
 				this.$http.put('/products/' + this.selected.id, {
@@ -107,22 +113,18 @@
 					price: this.editProductPrice,
 					pricingUnit: this.editPricingUnit,
 					isActive: this.editIsActive
-				}).then(response => {
+				}).then(() => {
+					this.selected = '';
 					this.editProductName = '';
 					this.editProductPrice = null;
 					this.editPricingUnit = '';
 					this.editIsActive = false;
 					this.infoMsg = 'Your product has been updated!';
 					this.isSuccess = true;
+					this.$store.dispatch('retrieveProducts');
 				}).catch(response => console.log('something broke', response));
 				
-			},
-			// myevent: function() {
-			// 	if(!this.selected) {
-			// 		this.selected = {name: ''};
-			// 	}
-			// },
-		
+			},		
 			postNewProduct: function() {
 				if(!this.newProductName) {
 					this.infoMsg = 'Please add product name';
@@ -142,8 +144,8 @@
 				this.$http.post('/product', {
 					name: this.newProductName,
 				    price: this.newProductPrice,
-				    pricingUnit: this.newProductPriceUnit,
-				    isActive: this.newProductIsActive
+				    pricingUnit: this.selected.priceUnit,
+				    isActive: this.selected.isActive
 				}).then(response => {
 					this.newProductName = '';
 					this.newProductPrice = null;
@@ -154,16 +156,16 @@
 				}).catch(response => console.log('something broke', response
 				)).finally(() => this.isAddingProduct = false);
 			  }
-			},
-			// showSelected: function() {
-			// 	console.log({selected});
-			// }  
+			},  
+			deleted: function() {
+				console.log('delete function called')
+	            this.$store.dispatch('deleteProduct', this.selected);
+			}
 		},
 		mounted() {
-			this.$store.dispatch('retrieveProducts');			
-		},
-
-	}	
+				this.$store.dispatch('retrieveProducts');			
+			}
+	};	
 
 </script>
 
