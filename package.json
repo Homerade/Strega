@@ -2,9 +2,11 @@
   "name": "fswd-project-seed",
   "version": "2.0.0",
   "description": "",
+  "engines": {
+    "node": "9.11.1"
+  },
   "main": "index.js",
   "scripts": {
-    "sequelize": "sequelize",
     "sequelize": "db:migrate && webpack",
     "babel-node": "BABEL_ENV=server babel-node",
     "start": "npm run babel-node -- ./server",
@@ -48,7 +50,8 @@
     "vue-select": "^2.4.0",
     "vue-template-compiler": "^2.5.16",
     "vuex": "^3.0.1",
-    "webpack": "^4.1.1"
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.14"
   },
   "devDependencies": {
     "nodemon": "^1.17.2",
