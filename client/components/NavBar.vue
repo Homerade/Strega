@@ -1,15 +1,15 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
-        <router-link class="navbar-brand" to='/'><h1>Strega Provisions.</h1></router-link>
+        <router-link class="navbar-brand" to='/'><h1>Strega.</h1></router-link>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <router-link class="nav-link" to='/currentproducts'>Current Products</router-link>
             </li>
             <li class="nav-item" v-show='!isLoggedIn'>
-                <router-link class="nav-link" to='/login'>Login</router-link>
+                <router-link class="nav-link" to='/register'>Start an Account</router-link>
             </li>
             <li class="nav-item" v-show='!isLoggedIn'>
-                <router-link class="nav-link" to='/register'>Start an Account</router-link>
+                <router-link class="nav-link" to='/login'>Login</router-link>
             </li>
             <li class="nav-item" v-show="isLoggedIn">
                 <router-link class="nav-link" to='/users'>Users</router-link>
@@ -45,6 +45,11 @@ export default {
 <style>
     body {
         font-family: courier;
+    }
+
+    li {
+        display: block;
+        padding: 1vw;
     }
 </style>
 <!-- <style>

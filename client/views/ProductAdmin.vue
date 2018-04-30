@@ -2,6 +2,7 @@
 <div>
 	<form @submit.prevent="editProduct">
 		<h3>Edit existing product</h3>
+		<p v-bind:class="{ 'text-danger': isError, 'text-success': isSuccess }" v-if='editMsg'>{{ editMsg }}</p>
 		<div class='form-group'>
 			<label for='productSelect'>Select product to edit</label>
 			<v-select v-model="selected" label='name' :options="products" placeholder='search products...' @input='selectedProduct'></v-select>
@@ -80,6 +81,7 @@
 				isAddingProduct: false,
 				selected: '',
 				infoMsg: '',
+				editMsg: '',
 				isError: false,
 				isSuccess: false,
 				editProductName: '',
@@ -119,7 +121,7 @@
 					this.editProductPrice = null;
 					this.editPricingUnit = '';
 					this.editIsActive = false;
-					this.infoMsg = 'Your product has been updated!';
+					this.editMsg = 'Your product has been updated!';
 					this.isSuccess = true;
 					this.$store.dispatch('retrieveProducts');
 				}).catch(response => console.log('something broke', response));
@@ -153,13 +155,22 @@
 					this.newProductIsActive = false;
 					this.infoMsg = 'Your product has been created';
 					this.isSuccess = true;
+					this.$store.dispatch('retrieveProducts');
 				}).catch(response => console.log('something broke', response
 				)).finally(() => this.isAddingProduct = false);
 			  }
 			},  
 			deleted: function() {
-				console.log('delete function called')
-	            this.$store.dispatch('deleteProduct', this.selected);
+	            this.$store.dispatch('deleteProduct', this.selected)
+	            	.then(() => {
+	            		this.selected = '';
+	            		this.editProductName = '';
+	            		this.editProductPrice = null;
+	            		this.editPricingUnit = '';
+	            		this.editIsActive = false;
+	            		this.editMsg = 'Your product has been deleted';
+	            		this.isSuccess = true;
+	            	})
 			}
 		},
 		mounted() {
