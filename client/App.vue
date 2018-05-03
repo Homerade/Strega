@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <NavBar></NavBar>
-        <div class="container">
+        <div class="container-fluid">
             <router-view></router-view>
         </div>
     </div>
@@ -21,3 +21,18 @@ export default {
 
 };
 </script>
+
+<style>
+    .container-fluid {
+        padding: 0;
+    }
+
+    .fa-icon {
+      width: auto;
+      height: 1.75vw; /* or any other relative font sizes */
+
+      /* You would have to include the following two lines to make this work in Safari */
+      max-width: 100%;
+      max-height: 100%;
+    }
+</style>    

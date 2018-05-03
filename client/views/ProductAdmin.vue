@@ -2,7 +2,7 @@
 <div>
 	<form @submit.prevent="editProduct">
 		<h3>Edit existing product</h3>
-		<p v-bind:class="{ 'text-danger': isError, 'text-success': isSuccess }" v-if='editMsg'>{{ editMsg }}</p>
+		<p v-bind:class="{ 'alert alert-warning': isDeleted, 'talert alert-primary': isEdited }" v-if='editMsg'>{{ editMsg }}</p>
 		<div class='form-group'>
 			<label for='productSelect'>Select product to edit</label>
 			<v-select v-model="selected" label='name' :options="products" placeholder='search products...' @input='selectedProduct'></v-select>
@@ -84,6 +84,7 @@
 				editMsg: '',
 				isError: false,
 				isSuccess: false,
+				isDeleted: false,
 				editProductName: '',
 				editProductPrice: null,
 				editPricingUnit: '',
@@ -195,3 +196,9 @@
 
 </style>
 
+
+<!-- Do you need role="alert" for the button alerts?
+
+<div class="alert alert-primary" role="alert">
+  This is a primary alert—check it out!
+</div> -->

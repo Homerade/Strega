@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "sequelize": "db:migrate && webpack",
+    "sequelize": "sequelize db:migrate && webpack",
     "babel-node": "BABEL_ENV=server babel-node",
     "start": "npm run babel-node -- ./server",
     "dev": "NODE_ENV=development nodemon --exec npm run babel-node -- ./server",
