@@ -33,6 +33,11 @@
 </template>
 
 <style type="text/css">
+
+	.row, .col-lg-12 {
+		padding: 0;
+	}
+
 	.fall {
 		background-color: #faeee7;
 	}
