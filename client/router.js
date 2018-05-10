@@ -8,11 +8,18 @@ import Register from './views/Register.vue';
 import Users from './views/Users.vue';
 import User from './views/User.vue';
 import ProductAdmin from './views/ProductAdmin.vue';
+import ProductsBySeason from './views/ProductsBySeason.vue';
 
 Vue.use(Router);
 
 export default new Router({
     routes: [
+
+        {
+            path: '/products',
+            name: 'products-by-season',
+            component: ProductsBySeason
+        },
         {
             path: '/',
             name: 'home',

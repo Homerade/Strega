@@ -3,7 +3,7 @@
         <router-link class="navbar-brand" to='/'><h1>Strega.</h1></router-link>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <router-link class="nav-link" to='/currentproducts'>Current Products</router-link>
+                <router-link class="nav-link" to='/products'>Products</router-link>
             </li>
             <li class="nav-item" v-show='!isLoggedIn'>
                 <router-link class="nav-link" to='/register'>Start an Account</router-link>
