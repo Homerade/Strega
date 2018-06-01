@@ -23,7 +23,23 @@
 		</section>
 
 		<section class="mc_integration">
-			<img class="d-block w-25" src="/assets/images/mc_script_black_web.png" alt='mailchimp'>
+			<!-- <img class="d-block w-25" src="/assets/images/mc_script_black_web.png" alt='mailchimp'> -->
+			<!-- Begin MailChimp Signup Form -->
+				<link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+				<div id="mc_embed_signup">
+				<form action="https://shortstack.us14.list-manage.com/subscribe/post?u=4a21b369613f37174cd7958c3&amp;id=cfb7494122" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+					<div id="mc_embed_signup_scroll">					
+					<label for="mce-EMAIL">Sign up for weekly product lists</label>
+					<input type="text" value="" name="FNAME" class="" id="mce-FNAME" placeholder="first name">				
+					<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+						<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+						<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_4a21b369613f37174cd7958c3_cfb7494122" tabindex="-1" value=""></div>
+						<div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+						</div>
+				</form>
+				</div>
+
+			<!--End mc_embed_signup-->
 		</section>	
 
 		<section class="bg-light">
@@ -62,7 +78,7 @@
 
 </template>
 
-<script type="text/javascript">
+<script type="text/javascript" src="">
 
 	import 'vue-awesome/icons/facebook';
 	import 'vue-awesome/icons/twitter';
@@ -81,7 +97,19 @@
 
 </script>
 
+	
+		
 <style type="text/css">
+
+
+
+#mc_embed_signup {
+	font-family: 'WendyBold';
+	background:#fff; 
+	clear:left; 
+	font:14px Helvetica,Arial,sans-serif; 
+	width:100%;
+	}
 	
 	.carousel-inner img {
 	  margin: auto;
@@ -102,9 +130,9 @@
 		margin: 2vw 0;
 	}
 
-	.mc_integration img {
+	/* .mc_integration img {
 		margin: auto;
-	}
+	} */
 
 	.moreStuff {
 		width: 40vw;

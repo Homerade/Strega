@@ -1,33 +1,41 @@
 <template>
 	<div class="container-fluid"> 
 
-			<section class="summer row">		
+		<router-link to='/products-all'>
+			<section class="summer row">						
 				<div class="col-lg-12">					
 					<img src="assets/images/prodBySeas/summer_cuke.jpg" class="float-right">
 					<span class="float-right">SUMMER</span>
-				</div>				
+				</div>								
 			</section>
+		</router-link>	
 
+		<router-link to='/products-all'>
 			<section class="fall row">
 				<div class="col-lg-12">
 					<img src="assets/images/prodBySeas/fall_leaf.jpg">
 					<span>FALL</span>
 				</div>
 			</section>
+		</router-link>
 
+		<router-link to='/products-all'>
 			<section class="winter row">
 				<div class="col-lg-12">					
 					<img src="assets/images/prodBySeas/winter_artichoke.jpg" class="float-right">
 					<span class="float-right">WINTER</span>
 				</div>	
 			</section>	
+		</router-link>
 
+		<router-link to='/products-all'>
 			<section class="spring row">
 				<div class="col-lg-12">
 					<img src="assets/images/prodBySeas/spring_scene.jpg">
 					<span>SPRING</span>
 				</div>	
 			</section>
+		</router-link>
 
 	</div>	
 </template>
@@ -40,6 +48,7 @@
 
 	.fall {
 		background-color: #faeee7;
+		text-decoration: none;
 	}
 
 	.winter {

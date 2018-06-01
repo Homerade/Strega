@@ -9,11 +9,18 @@ import Users from './views/Users.vue';
 import User from './views/User.vue';
 import ProductAdmin from './views/ProductAdmin.vue';
 import ProductsBySeason from './views/ProductsBySeason.vue';
+import AllProducts from './views/AllProducts.vue';
 
 Vue.use(Router);
 
 export default new Router({
     routes: [
+
+        {
+            path: '/currentproducts',
+            name: 'products-all',
+            component: AllProducts
+        },
 
         {
             path: '/products',
@@ -50,12 +57,7 @@ export default new Router({
             path: '/product-admin',
             name: 'product-admin',
             component: ProductAdmin
+        
         }
-        // },
-        // {
-        //     path: '/currentproducts',
-        //     name: 'products',
-        //     component: Products
-        // }
     ]
 });

@@ -13,7 +13,6 @@ export default new Vuex.Store({
   },
   mutations: {
     setProducts(state, products) {
-      console.log(products);
       state.products = products;
     },
     setLoggedIn(state, isLoggedIn) {

@@ -2,7 +2,7 @@
 <div>
 	<form @submit.prevent="editProduct">
 		<h3>Edit existing product</h3>
-		<p v-bind:class="{ 'alert alert-warning': isDeleted, 'talert alert-primary': isEdited }" v-if='editMsg'>{{ editMsg }}</p>
+		<p v-bind:class="{ 'text-danger': isDeleted, 'alert alert-primary': isEdited }" v-if='editMsg'>{{ editMsg }}</p>
 		<div class='form-group'>
 			<label for='productSelect'>Select product to edit</label>
 			<v-select v-model="selected" label='name' :options="products" placeholder='search products...' @input='selectedProduct'></v-select>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-	import Vue from 'vue'; //what's this for?
+	import Vue from 'vue';
 	import vSelect from 'vue-select'
 	import 'vue-awesome/icons/spinner';
 	import Icon from 'vue-awesome/components/Icon.vue';
@@ -108,7 +108,7 @@
 				this.editProductName = product.name;
 				this.editProductPrice = product.price;
 				this.editPricingUnit = product.pricingUnit;
-				this.editIsActive = product.isActive;
+				this.editIsActive = product.isActive;			
 			},
 			editProduct: function() {
 				this.$http.put('/products/' + this.selected.id, {
@@ -147,8 +147,8 @@
 				this.$http.post('/product', {
 					name: this.newProductName,
 				    price: this.newProductPrice,
-				    pricingUnit: this.selected.priceUnit,
-				    isActive: this.selected.isActive
+				    pricingUnit: this.newProductPriceUnit,
+				    isActive: this.newProductIsActive
 				}).then(response => {
 					this.newProductName = '';
 					this.newProductPrice = null;
@@ -170,7 +170,7 @@
 	            		this.editPricingUnit = '';
 	            		this.editIsActive = false;
 	            		this.editMsg = 'Your product has been deleted';
-	            		this.isSuccess = true;
+	            		this.isDeleted = true;
 	            	})
 			}
 		},
@@ -195,10 +195,3 @@
 	}
 
 </style>
-
-
-<!-- Do you need role="alert" for the button alerts?
-
-<div class="alert alert-primary" role="alert">
-  This is a primary alert—check it out!
-</div> -->
